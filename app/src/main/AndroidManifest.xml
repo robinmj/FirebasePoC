@@ -31,7 +31,7 @@
                 android:value="com.example.firebasepoc.PersonListActivity" />
         </activity>
         <activity android:name=".EditPersonActivity"
-            android:label="Edit Person"
+            android:label="@string/title_edit_person"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>

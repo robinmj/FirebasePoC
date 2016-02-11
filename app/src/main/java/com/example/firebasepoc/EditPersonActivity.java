@@ -33,6 +33,7 @@ public class EditPersonActivity extends AppCompatActivity {
 
     @Icicle private Person person;
 
+    @Bind(R.id.detail_toolbar) Toolbar toolbar;
     @Bind(R.id.fld_first_name) EditText fld_first_name;
     @Bind(R.id.fld_last_name) EditText fld_last_name;
     @Bind(R.id.fld_dob) EditText fld_dob;
@@ -44,21 +45,28 @@ public class EditPersonActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_person_edit);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
-        setSupportActionBar(toolbar);
 
         Icepick.restoreInstanceState(this, savedInstanceState);
 
         ButterKnife.bind(this);
 
-        if(person == null) {
+        if(this.person == null) {
             this.person = new Person();
         } else {
+            //pre-populate fields
             fld_first_name.setText(this.person.firstname);
             fld_last_name.setText(this.person.lastname);
             fld_dob.setText(DOB_FORMAT.format(this.person.firstname));
             fld_zip.setText(this.person.zip);
         }
+
+        if(this.person.getKey() == null) {
+            //otherwise, the activity label is used for the title
+            this.toolbar.setTitle(getResources().getString(R.string.title_add_person));
+        }
+
+        //this has to happen after toolbar.setTitle()
+        setSupportActionBar(this.toolbar);
 
         // Show the Up button in the action bar.
         ActionBar actionBar = getSupportActionBar();

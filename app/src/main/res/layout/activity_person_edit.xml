@@ -11,27 +11,16 @@
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/app_bar_height"
+        android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-        <android.support.design.widget.CollapsingToolbarLayout
-            android:id="@+id/toolbar_layout"
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/detail_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fitsSystemWindows="true"
-            app:contentScrim="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:toolbarId="@+id/toolbar">
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/detail_toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
-
-        </android.support.design.widget.CollapsingToolbarLayout>
+            android:layout_height="?attr/actionBarSize"
+            app:layout_collapseMode="pin"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     </android.support.design.widget.AppBarLayout>
 
@@ -43,26 +32,49 @@
         <LinearLayout
             android:orientation="vertical" android:layout_width="match_parent"
             android:layout_height="match_parent">
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/AppTheme.InputText"
+                    android:id="@+id/fld_first_name"
+                    android:inputType="textPersonName"
+                    android:hint="@string/label_first_name"
+                    />
+            </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/AppTheme.InputText"
+                    android:id="@+id/fld_last_name"
+                    android:inputType="textPersonName"
+                    android:hint="@string/label_last_name"
+                    />
+            </android.support.design.widget.TextInputLayout>
             <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 style="@style/AppTheme.InputText"
-                android:id="@+id/fld_first_name"
-                android:inputType="textPersonName"
-                />
-            <EditText
-                style="@style/AppTheme.InputText"
-                android:id="@+id/fld_last_name"
-                android:inputType="textPersonName"
-                />
-            <EditText
-                style="@style/AppTheme.InputText"
-                android:id="@+id/fld_dob"/><!--
-                android:drawableRight="@android:drawable/ic_event_black"
-                -->
-            <EditText
-                style="@style/AppTheme.InputText"
-                android:id="@+id/fld_zip"
-                android:inputType="text|number"
-                />
+                android:id="@+id/fld_dob"
+                android:hint="@string/label_dob"
+                android:drawableRight="@drawable/ic_event_black_24dp"/>
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/AppTheme.InputText"
+                    android:id="@+id/fld_zip"
+                    android:inputType="text|number"
+                    android:hint="@string/label_zip"/>
+            </android.support.design.widget.TextInputLayout>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 

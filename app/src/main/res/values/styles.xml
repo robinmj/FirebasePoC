@@ -35,7 +35,5 @@
 
     <style name="AppTheme.InputText">
         <item name="android:textSize">20sp</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
     </style>
 </resources>
