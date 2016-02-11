@@ -35,5 +35,6 @@
 
     <style name="AppTheme.InputText">
         <item name="android:textSize">20sp</item>
+        <item name="android:layout_margin">10sp</item>
     </style>
 </resources>
