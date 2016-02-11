@@ -72,6 +72,10 @@ public class PersonDetailFragment extends Fragment {
         Icepick.saveInstanceState(this, outState);
     }
 
+    public Person getPerson() {
+        return mPerson;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
