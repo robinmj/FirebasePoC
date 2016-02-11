@@ -15,8 +15,6 @@
             android:layout_column="0">
             <TextView android:id="@+id/lbl_first_name"
                 style="@style/AppTheme.LabelText"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
                 android:text="@string/label_first_name"/>
         </TableRow>
 
@@ -26,8 +24,6 @@
             android:layout_column="1">
             <TextView android:id="@+id/val_first_name"
                 style="@style/AppTheme.ValueText"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
                 android:textIsSelectable="true"/>
 
         </TableRow>
@@ -42,9 +38,7 @@
             android:layout_height="match_parent"
             android:layout_column="0">
             <TextView android:id="@+id/lbl_last_name"
-                style="@style/AppTheme.ValueText"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                style="@style/AppTheme.LabelText"
                 android:text="@string/label_last_name"/>
         </TableRow>
 
@@ -54,8 +48,6 @@
             android:layout_column="1">
             <TextView android:id="@+id/val_last_name"
                 style="@style/AppTheme.ValueText"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
                 android:textIsSelectable="true"/>
 
         </TableRow>
@@ -70,9 +62,7 @@
             android:layout_height="match_parent"
             android:layout_column="0">
             <TextView android:id="@+id/lbl_dob"
-                style="@style/AppTheme.ValueText"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                style="@style/AppTheme.LabelText"
                 android:text="@string/label_dob"/>
         </TableRow>
 
@@ -82,8 +72,6 @@
             android:layout_column="1">
             <TextView android:id="@+id/val_dob"
                 style="@style/AppTheme.ValueText"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
                 android:textIsSelectable="true"/>
 
         </TableRow>
@@ -98,9 +86,7 @@
             android:layout_height="match_parent"
             android:layout_column="0">
             <TextView android:id="@+id/lbl_zip"
-                style="@style/AppTheme.ValueText"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                style="@style/AppTheme.LabelText"
                 android:text="@string/label_zip"/>
         </TableRow>
 
@@ -110,8 +96,6 @@
             android:layout_column="1">
             <TextView android:id="@+id/val_zip"
                 style="@style/AppTheme.ValueText"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
                 android:textIsSelectable="true"/>
 
         </TableRow>
