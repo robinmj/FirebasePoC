@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">FirebasePoC</string>
+    <string name="title_person_detail">Person Detail</string>
+    <string name="label_first_name">First Name</string>
+    <string name="label_last_name">Last Name</string>
+    <string name="label_dob">Birth Date</string>
+    <string name="label_zip">Zip</string>
+</resources>

@@ -1,0 +1,119 @@
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/person_detail"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.firebasepoc.PersonDetailFragment">
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_column="0">
+            <TextView android:id="@+id/lbl_first_name"
+                style="@style/AppTheme.LabelText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/label_first_name"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_column="1">
+            <TextView android:id="@+id/val_first_name"
+                style="@style/AppTheme.ValueText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textIsSelectable="true"/>
+
+        </TableRow>
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_column="0">
+            <TextView android:id="@+id/lbl_last_name"
+                style="@style/AppTheme.ValueText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/label_last_name"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_column="1">
+            <TextView android:id="@+id/val_last_name"
+                style="@style/AppTheme.ValueText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textIsSelectable="true"/>
+
+        </TableRow>
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_column="0">
+            <TextView android:id="@+id/lbl_dob"
+                style="@style/AppTheme.ValueText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/label_dob"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_column="1">
+            <TextView android:id="@+id/val_dob"
+                style="@style/AppTheme.ValueText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textIsSelectable="true"/>
+
+        </TableRow>
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_column="0">
+            <TextView android:id="@+id/lbl_zip"
+                style="@style/AppTheme.ValueText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/label_zip"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_column="1">
+            <TextView android:id="@+id/val_zip"
+                style="@style/AppTheme.ValueText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textIsSelectable="true"/>
+
+        </TableRow>
+    </TableRow>
+</TableLayout>
