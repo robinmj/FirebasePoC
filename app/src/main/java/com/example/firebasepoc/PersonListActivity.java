@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.firebasepoc.data.Person;
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.ui.FirebaseRecyclerAdapter;
 
@@ -104,6 +105,16 @@ public class PersonListActivity extends AppCompatActivity {
 
         public PeopleRecyclerViewAdapter() {
             super(Person.class, R.layout.person_list_content, PersonViewHolder.class, PersonListActivity.this.mPeopleRef);
+        }
+
+        @Override
+        protected Person parseSnapshot(DataSnapshot snapshot) {
+            Person result = super.parseSnapshot(snapshot);
+
+            //populate primary key so we can edit/delete this Person later
+            result.setKey(snapshot.getKey());
+
+            return result;
         }
 
         @Override
