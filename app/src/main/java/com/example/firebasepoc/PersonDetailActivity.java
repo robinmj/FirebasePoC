@@ -89,32 +89,6 @@ public class PersonDetailActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    public static class ConfirmDelete extends DialogFragment implements DialogInterface.OnClickListener {
-
-        private Person person;
-
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-
-            this.person = (Person)getArguments().getSerializable(PersonDetailFragment.ARG_PERSON);
-
-            // Use the Builder class for convenient dialog construction
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setMessage("Delete " + person.getFullName() + "?")
-                   .setPositiveButton("Delete", this)
-                   .setNegativeButton("Cancel", null);
-            // Create the AlertDialog object and return it
-            return builder.create();
-        }
-
-        /** Delete clicked */
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-
-            Snackbar.make(((PersonDetailActivity)getActivity()).toolbar, "Deleted 1 Person", Snackbar.LENGTH_SHORT).show();
-        }
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -130,20 +104,10 @@ public class PersonDetailActivity extends AppCompatActivity {
                 NavUtils.navigateUpTo(this, new Intent(this, PersonListActivity.class));
                 return true;
             case R.id.action_delete:
-
-                Person person = this.personDetailFragment.getPerson();
-
-                ConfirmDelete confirmDelete = new ConfirmDelete();
-                Bundle args = new Bundle();
-                args.putSerializable(PersonDetailFragment.ARG_PERSON, person);
-
-                confirmDelete.setArguments(args);
-                confirmDelete.show(getSupportFragmentManager(), "confirmdelete");
+                this.personDetailFragment.deletePerson();
                 break;
             case R.id.action_edit:
-
-                Intent editIntent = new Intent(this, EditPersonActivity.class);
-                editIntent.putExtra(PersonDetailFragment.ARG_PERSON,  this.personDetailFragment.getPerson());
+                this.personDetailFragment.editPerson();
                 break;
         }
         return super.onOptionsItemSelected(item);

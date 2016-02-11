@@ -1,8 +1,14 @@
 package com.example.firebasepoc;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +37,8 @@ public class PersonDetailFragment extends Fragment {
      * represents.
      */
     public static final String ARG_PERSON = "mPerson";
+
+    public static final short REQUEST_EDIT_PERSON = 8512;
 
     private static final SimpleDateFormat DOB_FORMAT = new SimpleDateFormat("MMMM d, yyyy", Locale.getDefault());
 
@@ -74,6 +82,48 @@ public class PersonDetailFragment extends Fragment {
 
     public Person getPerson() {
         return mPerson;
+    }
+
+    public static class ConfirmDelete extends DialogFragment implements DialogInterface.OnClickListener {
+
+        private Person person;
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+
+            this.person = (Person)getArguments().getSerializable(PersonDetailFragment.ARG_PERSON);
+
+            // Use the Builder class for convenient dialog construction
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage("Delete " + person.getFullName() + "?")
+                    .setPositiveButton("Delete", this)
+                    .setNegativeButton("Cancel", null);
+            // Create the AlertDialog object and return it
+            return builder.create();
+        }
+
+        /** Delete clicked */
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+
+            Snackbar.make(getActivity().findViewById(R.id.person_detail), "Deleted 1 Person", Snackbar.LENGTH_SHORT).show();
+        }
+    }
+
+    public void deletePerson() {
+
+        ConfirmDelete confirmDelete = new ConfirmDelete();
+        Bundle args = new Bundle();
+        args.putSerializable(PersonDetailFragment.ARG_PERSON, this.mPerson);
+
+        confirmDelete.setArguments(args);
+        confirmDelete.show(getFragmentManager(), "confirmdelete");
+    }
+
+    public void editPerson() {
+        Intent editIntent = new Intent(getContext(), EditPersonActivity.class);
+        editIntent.putExtra(PersonDetailFragment.ARG_PERSON,  this.mPerson);
+        startActivityForResult(editIntent, REQUEST_EDIT_PERSON);
     }
 
     @Override
