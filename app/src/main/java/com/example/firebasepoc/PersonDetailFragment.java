@@ -10,12 +10,14 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.firebasepoc.data.Person;
+import com.firebase.client.Firebase;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -80,10 +82,6 @@ public class PersonDetailFragment extends Fragment {
         Icepick.saveInstanceState(this, outState);
     }
 
-    public Person getPerson() {
-        return mPerson;
-    }
-
     public static class ConfirmDelete extends DialogFragment implements DialogInterface.OnClickListener {
 
         private Person person;
@@ -105,6 +103,15 @@ public class PersonDetailFragment extends Fragment {
         /** Delete clicked */
         @Override
         public void onClick(DialogInterface dialog, int which) {
+
+            if(this.person.getKey() == null) {
+                Log.e(App.TAG, "unknown user");
+                return;
+            }
+
+            Firebase peopleRef = new Firebase(getResources().getString(R.string.firebase_url)).child("people");
+
+            peopleRef.child(this.person.getKey()).setValue(null);
 
             Snackbar.make(getActivity().findViewById(R.id.person_detail), "Deleted 1 Person", Snackbar.LENGTH_SHORT).show();
         }
@@ -134,9 +141,12 @@ public class PersonDetailFragment extends Fragment {
         ButterKnife.bind(this, rootView);
 
         if (mPerson != null) {
+            //populate details
             mVal_first_name.setText(mPerson.firstname);
             mVal_last_name.setText(mPerson.lastname);
-            mVal_dob.setText(DOB_FORMAT.format(mPerson.getBirthDate()));
+            if(mPerson.getBirthDate() != null) {
+                mVal_dob.setText(DOB_FORMAT.format(mPerson.getBirthDate()));
+            }
             mVal_zip.setText(mPerson.zip);
         }
 

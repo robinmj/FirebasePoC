@@ -2,6 +2,8 @@ package com.example.firebasepoc.data;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by robin on 2/10/16.
@@ -64,5 +66,17 @@ public class Person implements Serializable {
 
     public void setDob(Long dob) {
         this.dob = dob;
+    }
+
+    /**
+     * @return the data to be persisted
+     */
+    public Map<String,Object> toMap() {
+        HashMap<String,Object> result = new HashMap<>();
+        result.put("firstname", getFirstname());
+        result.put("lastname", getLastname());
+        result.put("dob", getDob());
+        result.put("zip", getZip());
+        return result;
     }
 }
