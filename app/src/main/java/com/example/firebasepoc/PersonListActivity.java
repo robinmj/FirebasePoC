@@ -29,6 +29,8 @@ import butterknife.ButterKnife;
  */
 public class PersonListActivity extends AppCompatActivity {
 
+    public static final short REQUEST_ADD_PERSON = 1693;
+
     @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.fab) FloatingActionButton fab;
     @Bind(R.id.person_list) RecyclerView recyclerView;
@@ -65,8 +67,7 @@ public class PersonListActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                startActivityForResult(new Intent(PersonListActivity.this, EditPersonActivity.class), REQUEST_ADD_PERSON);
             }
         });
 
