@@ -13,8 +13,10 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.firebasepoc.data.Person;
+import com.firebase.client.AuthData;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
 import com.firebase.ui.FirebaseRecyclerAdapter;
 
 import butterknife.Bind;
@@ -59,22 +61,11 @@ public class PersonListActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        this.mFirebase = new Firebase(getResources().getString(R.string.firebase_url));
-        this.mPeopleRef = mFirebase.child("people");
-
         toolbar.setTitle("My People");
 
         setSupportActionBar(toolbar);
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivityForResult(new Intent(PersonListActivity.this, EditPersonActivity.class), REQUEST_ADD_PERSON);
-            }
-        });
-
-        assert recyclerView != null;
-        setupRecyclerView((RecyclerView) recyclerView);
+        setupFirebase();
 
         if (findViewById(R.id.person_detail_container) != null) {
             // The detail container view will be present only in the
@@ -96,6 +87,31 @@ public class PersonListActivity extends AppCompatActivity {
             mView = view;
             ButterKnife.bind(this, view);
         }
+    }
+
+    private void setupFirebase() {
+        this.mFirebase = new Firebase(getResources().getString(R.string.firebase_url));
+
+        this.mFirebase.authWithPassword(getResources().getString(R.string.firebase_email), getResources().getString(R.string.firebase_password), new Firebase.AuthResultHandler() {
+
+            @Override
+            public void onAuthenticated(AuthData authData) {
+                PersonListActivity.this.mPeopleRef = mFirebase.child("people");
+                setupRecyclerView((RecyclerView) recyclerView);
+
+                PersonListActivity.this.fab.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        startActivityForResult(new Intent(PersonListActivity.this, EditPersonActivity.class), REQUEST_ADD_PERSON);
+                    }
+                });
+            }
+
+            @Override
+            public void onAuthenticationError(FirebaseError firebaseError) {
+                Snackbar.make(toolbar, firebaseError.getMessage(), Snackbar.LENGTH_LONG).show();
+            }
+        });
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
