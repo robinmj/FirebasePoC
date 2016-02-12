@@ -73,7 +73,7 @@ public class PersonDetailFragment extends Fragment {
         Activity activity = this.getActivity();
         CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
         if (appBarLayout != null && mPerson != null) {
-            appBarLayout.setTitle(mPerson.firstname + " " + mPerson.lastname);
+            appBarLayout.setTitle(mPerson.getFirstname() + " " + mPerson.getLastname());
         }
     }
 
@@ -142,12 +142,12 @@ public class PersonDetailFragment extends Fragment {
 
         if (mPerson != null) {
             //populate details
-            mVal_first_name.setText(mPerson.firstname);
-            mVal_last_name.setText(mPerson.lastname);
+            mVal_first_name.setText(mPerson.getFirstname());
+            mVal_last_name.setText(mPerson.getLastname());
             if(mPerson.getBirthDate() != null) {
                 mVal_dob.setText(DOB_FORMAT.format(mPerson.getBirthDate()));
             }
-            mVal_zip.setText(mPerson.zip);
+            mVal_zip.setText(mPerson.getZip());
         }
 
         return rootView;

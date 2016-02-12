@@ -24,7 +24,6 @@ import com.firebase.client.FirebaseError;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
@@ -86,12 +85,12 @@ public class EditPersonActivity extends AppCompatActivity
             this.mPerson = new Person();
         } else {
             //pre-populate fields
-            mFld_first_name.setText(this.mPerson.firstname);
-            mFld_last_name.setText(this.mPerson.lastname);
+            mFld_first_name.setText(this.mPerson.getFirstname());
+            mFld_last_name.setText(this.mPerson.getLastname());
             if(this.mPerson.getBirthDate() != null) {
                 mFld_dob.setText(DOB_FORMAT.format(this.mPerson.getBirthDate()));
             }
-            mFld_zip.setText(this.mPerson.zip);
+            mFld_zip.setText(this.mPerson.getZip());
         }
 
         mFld_first_name.setOnEditorActionListener(mFieldChangedListener);
@@ -153,6 +152,7 @@ public class EditPersonActivity extends AppCompatActivity
         Icepick.saveInstanceState(this, outState);
     }
 
+    /** Opens datepicker in reponse to DOB field being selected */
     private TextView.OnFocusChangeListener mEditDobListener = new TextView.OnFocusChangeListener() {
         @Override
         public void onFocusChange(View v, boolean hasFocus) {
@@ -186,7 +186,6 @@ public class EditPersonActivity extends AppCompatActivity
             GregorianCalendar calendar = new GregorianCalendar();
             calendar.setTimeInMillis(getArguments().getLong(ARG_INITIAL_TIME));
 
-            // Create a new instance of DatePickerDialog and return it
             return new DatePickerDialog(getActivity(),
                     (DatePickerDialog.OnDateSetListener)getActivity(),
                     calendar.get(Calendar.YEAR),

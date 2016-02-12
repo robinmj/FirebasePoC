@@ -10,9 +10,9 @@ import java.util.Map;
  */
 public class Person implements Serializable {
 
-    public String firstname, lastname, zip;
+    private String firstname, lastname, zip;
 
-    public Long dob;
+    private Long dob;
 
     private String key = null;
 

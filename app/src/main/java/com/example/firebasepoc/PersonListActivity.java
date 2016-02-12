@@ -120,8 +120,8 @@ public class PersonListActivity extends AppCompatActivity {
         @Override
         protected void populateViewHolder(PersonViewHolder holder, final Person person, int position) {
             holder.mPerson = person;
-            holder.mIdView.setText(holder.mPerson.firstname);
-            holder.mContentView.setText(holder.mPerson.lastname);
+            holder.mIdView.setText(holder.mPerson.getFirstname());
+            holder.mContentView.setText(holder.mPerson.getLastname());
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
