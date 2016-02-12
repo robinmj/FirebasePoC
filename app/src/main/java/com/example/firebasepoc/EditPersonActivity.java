@@ -4,9 +4,7 @@ import android.animation.ObjectAnimator;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
@@ -171,7 +169,6 @@ public class EditPersonActivity extends AppCompatActivity
             newPersonRef.setValue(person.toMap(), new Firebase.CompletionListener() {
                 @Override
                 public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                    Snackbar.make(mToolbar, "Created New Person", Snackbar.LENGTH_SHORT).show();
                     showDoneStatus();
                 }
             });
@@ -182,7 +179,6 @@ public class EditPersonActivity extends AppCompatActivity
             peopleRef.child(key).setValue(person.toMap(), new Firebase.CompletionListener() {
                 @Override
                 public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                    Snackbar.make(mToolbar, "Person Saved", Snackbar.LENGTH_SHORT).show();
                     showDoneStatus();
                 }
             });
