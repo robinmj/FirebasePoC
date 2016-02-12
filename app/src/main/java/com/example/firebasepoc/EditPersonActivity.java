@@ -1,15 +1,20 @@
 package com.example.firebasepoc;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -18,6 +23,9 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import butterknife.Bind;
@@ -31,7 +39,8 @@ import icepick.Icicle;
  * item details are presented side-by-side with a list of items
  * in a {@link PersonListActivity}.
  */
-public class EditPersonActivity extends AppCompatActivity {
+public class EditPersonActivity extends AppCompatActivity
+        implements DatePickerDialog.OnDateSetListener {
 
     @Icicle private Person mPerson;
 
@@ -87,7 +96,7 @@ public class EditPersonActivity extends AppCompatActivity {
 
         mFld_first_name.setOnEditorActionListener(mFieldChangedListener);
         mFld_last_name.setOnEditorActionListener(mFieldChangedListener);
-        mFld_dob.setOnEditorActionListener(mFieldChangedListener);
+        mFld_dob.setOnFocusChangeListener(mEditDobListener);
         mFld_zip.setOnEditorActionListener(mFieldChangedListener);
 
         if(this.mPerson.getKey() == null) {
@@ -142,6 +151,57 @@ public class EditPersonActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Icepick.saveInstanceState(this, outState);
+    }
+
+    private TextView.OnFocusChangeListener mEditDobListener = new TextView.OnFocusChangeListener() {
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            if(!hasFocus) {
+                //DOB field lost focus- don't open picker
+                return;
+            }
+
+            Bundle args = new Bundle();
+
+            Long initialTime = EditPersonActivity.this.mPerson.getDob();
+
+            if(initialTime == null) {
+                initialTime = System.currentTimeMillis();
+            }
+
+            args.putLong(DobPickerFragment.ARG_INITIAL_TIME, initialTime);
+
+            DobPickerFragment dobPicker = new DobPickerFragment();
+            dobPicker.setArguments(args);
+            dobPicker.show(getSupportFragmentManager(), "dobpicker");
+        }
+    };
+
+    public static class DobPickerFragment extends DialogFragment {
+        public static final String ARG_INITIAL_TIME = "initial_time";
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+
+            GregorianCalendar calendar = new GregorianCalendar();
+            calendar.setTimeInMillis(getArguments().getLong(ARG_INITIAL_TIME));
+
+            // Create a new instance of DatePickerDialog and return it
+            return new DatePickerDialog(getActivity(),
+                    (DatePickerDialog.OnDateSetListener)getActivity(),
+                    calendar.get(Calendar.YEAR),
+                    calendar.get(Calendar.MONTH),
+                    calendar.get(Calendar.DAY_OF_MONTH));
+        }
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int day) {
+        GregorianCalendar calendar = new GregorianCalendar();
+        calendar.set(year,month,day);
+        this.mPerson.setDob(calendar.getTimeInMillis());
+        this.mFld_dob.setText(DOB_FORMAT.format(this.mPerson.getBirthDate()));
+        savePerson();
     }
 
     @Override
