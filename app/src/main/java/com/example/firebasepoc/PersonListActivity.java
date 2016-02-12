@@ -62,8 +62,9 @@ public class PersonListActivity extends AppCompatActivity {
         this.mFirebase = new Firebase(getResources().getString(R.string.firebase_url));
         this.mPeopleRef = mFirebase.child("people");
 
+        toolbar.setTitle("My People");
+
         setSupportActionBar(toolbar);
-        toolbar.setTitle(getTitle());
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
