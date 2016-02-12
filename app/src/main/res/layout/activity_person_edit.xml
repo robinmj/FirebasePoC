@@ -12,14 +12,12 @@
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/detail_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:layout_collapseMode="pin"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     </android.support.design.widget.AppBarLayout>
@@ -32,9 +30,18 @@
         <LinearLayout
             android:orientation="vertical" android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="10dp"
-            android:padding="20dp"
-            android:background="@android:drawable/dialog_holo_light_frame">
+            android:layout_margin="@dimen/text_margin"
+            android:padding="10sp">
+
+            <ImageView
+                android:id="@+id/img_sync_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="@dimen/fab_margin"
+                android:src="@drawable/ic_cloud_done_black_24dp"/>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -62,13 +69,24 @@
                     android:maxLength="30"
                     />
             </android.support.design.widget.TextInputLayout>
-            <EditText
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginLeft="4sp"
+                android:text="@string/label_dob"
+                android:textColor="@color/material_grey_600"
+                android:textSize="12sp"/>
+
+            <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/input_separation"
                 style="@style/AppTheme.InputText"
-                android:id="@+id/fld_dob"
-                android:hint="@string/label_dob"
+                android:id="@+id/btn_dob"
                 android:drawableRight="@drawable/ic_event_black_24dp"/>
+
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">

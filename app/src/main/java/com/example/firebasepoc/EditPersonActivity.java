@@ -1,8 +1,10 @@
 package com.example.firebasepoc;
 
+import android.animation.ObjectAnimator;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
@@ -14,8 +16,10 @@ import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.firebasepoc.data.Person;
@@ -44,13 +48,15 @@ public class EditPersonActivity extends AppCompatActivity
     @Icicle private Person mPerson;
 
     @Bind(R.id.detail_toolbar) Toolbar mToolbar;
+    @Bind(R.id.img_sync_status) ImageView mImg_sync_status;
     @Bind(R.id.fld_first_name) EditText mFld_first_name;
     @Bind(R.id.fld_last_name) EditText mFld_last_name;
-    @Bind(R.id.fld_dob) EditText mFld_dob;
+    @Bind(R.id.btn_dob) Button mBtn_dob;
     @Bind(R.id.fld_zip) EditText mFld_zip;
 
     private static final SimpleDateFormat DOB_FORMAT = new SimpleDateFormat("MMMM d, yyyy", Locale.getDefault());
 
+    private ObjectAnimator mSyncStatusBlink = null;
 
     private TextView.OnEditorActionListener mFieldChangedListener = new TextView.OnEditorActionListener() {
         @Override
@@ -88,19 +94,20 @@ public class EditPersonActivity extends AppCompatActivity
             mFld_first_name.setText(this.mPerson.getFirstname());
             mFld_last_name.setText(this.mPerson.getLastname());
             if(this.mPerson.getBirthDate() != null) {
-                mFld_dob.setText(DOB_FORMAT.format(this.mPerson.getBirthDate()));
+                mBtn_dob.setText(DOB_FORMAT.format(this.mPerson.getBirthDate()));
             }
             mFld_zip.setText(this.mPerson.getZip());
         }
 
         mFld_first_name.setOnEditorActionListener(mFieldChangedListener);
         mFld_last_name.setOnEditorActionListener(mFieldChangedListener);
-        mFld_dob.setOnFocusChangeListener(mEditDobListener);
+        mBtn_dob.setOnClickListener(mEditDobListener);
         mFld_zip.setOnEditorActionListener(mFieldChangedListener);
 
         if(this.mPerson.getKey() == null) {
             //otherwise, the activity label is used for the title
             this.mToolbar.setTitle(getResources().getString(R.string.title_add_person));
+            setSyncStatus(R.drawable.ic_cloud_queue_black_24dp);
         }
 
         //this has to happen after mToolbar.setTitle()
@@ -113,7 +120,41 @@ public class EditPersonActivity extends AppCompatActivity
         }
     }
 
+    private void setSyncStatus(int drawableId) {
+        this.mImg_sync_status.clearAnimation();
+        this.mImg_sync_status.setImageDrawable(getResources().getDrawable(drawableId));
+    }
+
+    private void showUploadingStatus() {
+
+        clearBlinkAnimation();
+
+        this.mSyncStatusBlink = ObjectAnimator.ofFloat(this.mImg_sync_status, "alpha", 0f);
+        this.mSyncStatusBlink.setDuration(1000);
+        this.mSyncStatusBlink.setRepeatCount(ObjectAnimator.INFINITE);
+        this.mSyncStatusBlink.start();
+
+        this.mImg_sync_status.setImageDrawable(getResources().getDrawable(R.drawable.ic_cloud_upload_black_24dp));
+    }
+
+    private void showDoneStatus() {
+        clearBlinkAnimation();
+        setSyncStatus(R.drawable.ic_cloud_done_black_24dp);
+    }
+
+    private void clearBlinkAnimation() {
+
+        if(this.mSyncStatusBlink != null) {
+            this.mSyncStatusBlink.cancel();
+            this.mImg_sync_status.setAlpha(1f);
+            this.mSyncStatusBlink = null;
+        }
+    }
+
     private void savePerson() {
+
+        showUploadingStatus();
+
         Person person = this.mPerson;
 
         person.setFirstname(mFld_first_name.getText().toString());
@@ -131,6 +172,7 @@ public class EditPersonActivity extends AppCompatActivity
                 @Override
                 public void onComplete(FirebaseError firebaseError, Firebase firebase) {
                     Snackbar.make(mToolbar, "Created New Person", Snackbar.LENGTH_SHORT).show();
+                    showDoneStatus();
                 }
             });
 
@@ -141,6 +183,7 @@ public class EditPersonActivity extends AppCompatActivity
                 @Override
                 public void onComplete(FirebaseError firebaseError, Firebase firebase) {
                     Snackbar.make(mToolbar, "Person Saved", Snackbar.LENGTH_SHORT).show();
+                    showDoneStatus();
                 }
             });
         }
@@ -153,13 +196,10 @@ public class EditPersonActivity extends AppCompatActivity
     }
 
     /** Opens datepicker in reponse to DOB field being selected */
-    private TextView.OnFocusChangeListener mEditDobListener = new TextView.OnFocusChangeListener() {
+    private TextView.OnClickListener mEditDobListener = new TextView.OnClickListener() {
+
         @Override
-        public void onFocusChange(View v, boolean hasFocus) {
-            if(!hasFocus) {
-                //DOB field lost focus- don't open picker
-                return;
-            }
+        public void onClick(View v) {
 
             Bundle args = new Bundle();
 
@@ -199,7 +239,7 @@ public class EditPersonActivity extends AppCompatActivity
         GregorianCalendar calendar = new GregorianCalendar();
         calendar.set(year,month,day);
         this.mPerson.setDob(calendar.getTimeInMillis());
-        this.mFld_dob.setText(DOB_FORMAT.format(this.mPerson.getBirthDate()));
+        this.mBtn_dob.setText(DOB_FORMAT.format(this.mPerson.getBirthDate()));
         savePerson();
     }
 
