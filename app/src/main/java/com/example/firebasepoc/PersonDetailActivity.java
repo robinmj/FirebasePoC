@@ -47,8 +47,8 @@ public class PersonDetailActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own detail action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Snackbar.make(view, "Wouldn't it be nice if this app had messaging?", Snackbar.LENGTH_LONG)
+                        .show();
             }
         });
 
