@@ -33,18 +33,18 @@ import icepick.Icicle;
  */
 public class EditPersonActivity extends AppCompatActivity {
 
-    @Icicle private Person person;
+    @Icicle private Person mPerson;
 
-    @Bind(R.id.detail_toolbar) Toolbar toolbar;
-    @Bind(R.id.fld_first_name) EditText fld_first_name;
-    @Bind(R.id.fld_last_name) EditText fld_last_name;
-    @Bind(R.id.fld_dob) EditText fld_dob;
-    @Bind(R.id.fld_zip) EditText fld_zip;
+    @Bind(R.id.detail_toolbar) Toolbar mToolbar;
+    @Bind(R.id.fld_first_name) EditText mFld_first_name;
+    @Bind(R.id.fld_last_name) EditText mFld_last_name;
+    @Bind(R.id.fld_dob) EditText mFld_dob;
+    @Bind(R.id.fld_zip) EditText mFld_zip;
 
     private static final SimpleDateFormat DOB_FORMAT = new SimpleDateFormat("MMMM d, yyyy", Locale.getDefault());
 
 
-    private TextView.OnEditorActionListener nameValidator = new TextView.OnEditorActionListener() {
+    private TextView.OnEditorActionListener mFieldChangedListener = new TextView.OnEditorActionListener() {
         @Override
         public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
             switch(actionId) {
@@ -67,36 +67,36 @@ public class EditPersonActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        if(this.person == null) {
-            //try to get person from extras if it wasn't in savedInstanceState
-            this.person = (Person)getIntent().getSerializableExtra(PersonDetailFragment.ARG_PERSON);
+        if(this.mPerson == null) {
+            //try to get mPerson from extras if it wasn't in savedInstanceState
+            this.mPerson = (Person)getIntent().getSerializableExtra(PersonDetailFragment.ARG_PERSON);
         }
 
-        if(this.person == null) {
-            //otherwise, assume we're creating a new person
-            this.person = new Person();
+        if(this.mPerson == null) {
+            //otherwise, assume we're creating a new mPerson
+            this.mPerson = new Person();
         } else {
             //pre-populate fields
-            fld_first_name.setText(this.person.firstname);
-            fld_last_name.setText(this.person.lastname);
-            if(this.person.getBirthDate() != null) {
-                fld_dob.setText(DOB_FORMAT.format(this.person.getBirthDate()));
+            mFld_first_name.setText(this.mPerson.firstname);
+            mFld_last_name.setText(this.mPerson.lastname);
+            if(this.mPerson.getBirthDate() != null) {
+                mFld_dob.setText(DOB_FORMAT.format(this.mPerson.getBirthDate()));
             }
-            fld_zip.setText(this.person.zip);
+            mFld_zip.setText(this.mPerson.zip);
         }
 
-        fld_first_name.setOnEditorActionListener(nameValidator);
-        fld_last_name.setOnEditorActionListener(nameValidator);
-        fld_dob.setOnEditorActionListener(nameValidator);
-        fld_zip.setOnEditorActionListener(nameValidator);
+        mFld_first_name.setOnEditorActionListener(mFieldChangedListener);
+        mFld_last_name.setOnEditorActionListener(mFieldChangedListener);
+        mFld_dob.setOnEditorActionListener(mFieldChangedListener);
+        mFld_zip.setOnEditorActionListener(mFieldChangedListener);
 
-        if(this.person.getKey() == null) {
+        if(this.mPerson.getKey() == null) {
             //otherwise, the activity label is used for the title
-            this.toolbar.setTitle(getResources().getString(R.string.title_add_person));
+            this.mToolbar.setTitle(getResources().getString(R.string.title_add_person));
         }
 
-        //this has to happen after toolbar.setTitle()
-        setSupportActionBar(this.toolbar);
+        //this has to happen after mToolbar.setTitle()
+        setSupportActionBar(this.mToolbar);
 
         // Show the Up button in the action bar.
         ActionBar actionBar = getSupportActionBar();
@@ -106,11 +106,11 @@ public class EditPersonActivity extends AppCompatActivity {
     }
 
     private void savePerson() {
-        Person person = this.person;
+        Person person = this.mPerson;
 
-        person.setFirstname(fld_first_name.getText().toString());
-        person.setLastname(fld_last_name.getText().toString());
-        person.setZip(fld_zip.getText().toString());
+        person.setFirstname(mFld_first_name.getText().toString());
+        person.setLastname(mFld_last_name.getText().toString());
+        person.setZip(mFld_zip.getText().toString());
 
         String key = person.getKey();
 
@@ -122,7 +122,7 @@ public class EditPersonActivity extends AppCompatActivity {
             newPersonRef.setValue(person.toMap(), new Firebase.CompletionListener() {
                 @Override
                 public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                    Snackbar.make(toolbar, "Created New Person", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(mToolbar, "Created New Person", Snackbar.LENGTH_SHORT).show();
                 }
             });
 
@@ -132,7 +132,7 @@ public class EditPersonActivity extends AppCompatActivity {
             peopleRef.child(key).setValue(person.toMap(), new Firebase.CompletionListener() {
                 @Override
                 public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                    Snackbar.make(toolbar, "Person Saved", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(mToolbar, "Person Saved", Snackbar.LENGTH_SHORT).show();
                 }
             });
         }
