@@ -109,7 +109,7 @@ public class PersonDetailFragment extends Fragment {
                 return;
             }
 
-            Firebase peopleRef = new Firebase(getResources().getString(R.string.firebase_url)).child("people");
+            Firebase peopleRef = ((App)getActivity().getApplication()).getFbPeopleRef();
 
             peopleRef.child(this.person.getKey()).setValue(null);
 

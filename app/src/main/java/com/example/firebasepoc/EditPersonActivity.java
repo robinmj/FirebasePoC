@@ -161,7 +161,7 @@ public class EditPersonActivity extends AppCompatActivity
 
         String key = person.getKey();
 
-        Firebase peopleRef = new Firebase(getResources().getString(R.string.firebase_url)).child("people");
+        Firebase peopleRef = ((App)getApplication()).getFbPeopleRef();
 
         if(key == null) {
             //insert

@@ -90,9 +90,8 @@ public class PersonListActivity extends AppCompatActivity {
     }
 
     private void setupFirebase() {
-        this.mFirebase = new Firebase(getResources().getString(R.string.firebase_url));
 
-        this.mFirebase.authWithPassword(getResources().getString(R.string.firebase_email), getResources().getString(R.string.firebase_password), new Firebase.AuthResultHandler() {
+        this.mFirebase = ((App)getApplication()).initFirebase(new Firebase.AuthResultHandler() {
 
             @Override
             public void onAuthenticated(AuthData authData) {
