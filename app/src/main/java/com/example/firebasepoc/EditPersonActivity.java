@@ -65,7 +65,7 @@ public class EditPersonActivity extends AppCompatActivity
                 case EditorInfo.IME_ACTION_DONE:
                 case EditorInfo.IME_ACTION_NEXT:
                     savePerson();
-                    return true;
+                    return false;
             }
             return false;
         }
