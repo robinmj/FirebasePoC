@@ -41,7 +41,7 @@ public class TestEditPerson {
     private ActivityController<EditPersonActivity> activityController;
 
     private EditText mFld_first_name;
-    private EditText mFld_last_name;
+    private EditText mFld_zip;
     private ShadowImageView mImg_sync_status;
 
     private Firebase mockPeopleRef;
@@ -75,7 +75,7 @@ public class TestEditPerson {
 
     private void findViews(Activity activity) {
         mFld_first_name = (EditText) activity.findViewById(R.id.fld_first_name);
-        mFld_last_name = (EditText) activity.findViewById(R.id.fld_last_name);
+        mFld_zip = (EditText) activity.findViewById(R.id.fld_zip);
         mImg_sync_status = shadowOf((ImageView) activity.findViewById(R.id.img_sync_status));
     }
 
@@ -120,10 +120,10 @@ public class TestEditPerson {
         //should access existing record
         when(mockPeopleRef.child("mock_pk")).thenReturn(mockPersonRef);
 
-        mFld_last_name.setText("Smith");
+        mFld_zip.setText("12345");
 
         //trigger update
-        mFld_last_name.dispatchKeyEvent(new KeyEvent(0, 0, KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER, 1));
+        mFld_zip.dispatchKeyEvent(new KeyEvent(0, 0, KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER, 1));
 
         //mockPersonRef.setValue should be called
         Assert.assertNotNull(completionListener);
@@ -180,10 +180,10 @@ public class TestEditPerson {
         //should access existing record
         when(mockPeopleRef.child("mock_pk")).thenReturn(mockPersonRef);
 
-        mFld_last_name.setText("Smith");
+        mFld_zip.setText("85762");
 
         //trigger update
-        mFld_last_name.dispatchKeyEvent(new KeyEvent(0, 0, KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER, 1));
+        mFld_zip.dispatchKeyEvent(new KeyEvent(0, 0, KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER, 1));
 
         //mockPersonRef.setValue should be called
         Assert.assertNotNull(completionListener);
