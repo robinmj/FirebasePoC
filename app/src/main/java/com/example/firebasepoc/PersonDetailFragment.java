@@ -25,7 +25,7 @@ import java.util.Locale;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import icepick.Icepick;
-import icepick.Icicle;
+import icepick.State;
 
 /**
  * A fragment representing a single Person detail screen.
@@ -47,7 +47,7 @@ public class PersonDetailFragment extends Fragment {
     /**
      * The Person this fragment is presenting.
      */
-    @Icicle private Person mPerson;
+    @State Person mPerson;
 
     @Bind(R.id.val_first_name) TextView mVal_first_name;
     @Bind(R.id.val_last_name) TextView mVal_last_name;
