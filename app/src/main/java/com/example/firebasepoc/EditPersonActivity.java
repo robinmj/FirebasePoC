@@ -10,6 +10,7 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,7 +33,7 @@ import java.util.Locale;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import icepick.Icepick;
-import icepick.Icicle;
+import icepick.State;
 
 /**
  * An activity representing a single Person detail screen. This
@@ -43,7 +44,7 @@ import icepick.Icicle;
 public class EditPersonActivity extends AppCompatActivity
         implements DatePickerDialog.OnDateSetListener {
 
-    @Icicle private Person mPerson;
+    @State Person mPerson;
 
     @Bind(R.id.detail_toolbar) Toolbar mToolbar;
     @Bind(R.id.img_sync_status) ImageView mImg_sync_status;
@@ -80,6 +81,7 @@ public class EditPersonActivity extends AppCompatActivity
         ButterKnife.bind(this);
 
         if(this.mPerson == null) {
+            Log.w(App.TAG, "deserializing extra");
             //try to get mPerson from extras if it wasn't in savedInstanceState
             this.mPerson = (Person)getIntent().getSerializableExtra(PersonDetailFragment.ARG_PERSON);
         }
@@ -103,6 +105,8 @@ public class EditPersonActivity extends AppCompatActivity
         mFld_zip.setOnEditorActionListener(mFieldChangedListener);
 
         if(this.mPerson.getKey() == null) {
+            Log.w(App.TAG, "restored without key");
+
             //otherwise, the activity label is used for the title
             this.mToolbar.setTitle(getResources().getString(R.string.title_add_person));
             setSyncStatus(R.drawable.ic_cloud_queue_black_24dp);
@@ -174,6 +178,8 @@ public class EditPersonActivity extends AppCompatActivity
             });
 
             person.setKey(newPersonRef.getKey());
+
+            Log.i(App.TAG, "saved with key: " + this.mPerson.getKey());
         } else {
             //update
             peopleRef.child(key).setValue(person.toMap(), new Firebase.CompletionListener() {
