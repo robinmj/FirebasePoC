@@ -65,8 +65,14 @@ public class EditPersonActivity extends AppCompatActivity
                 case EditorInfo.IME_ACTION_DONE:
                 case EditorInfo.IME_ACTION_NEXT:
                     savePerson();
-                    return false;
             }
+            if(v.getId() == R.id.fld_last_name) {
+                //rather than focusing on next field, show birthdate picker
+                mEditDobListener.onClick(mBtn_dob);
+                return true;
+            }
+
+            //allow default processing of event to occur (ie focus on next field)
             return false;
         }
     };
@@ -243,6 +249,7 @@ public class EditPersonActivity extends AppCompatActivity
         this.mPerson.setDob(calendar.getTimeInMillis());
         this.mBtn_dob.setText(DOB_FORMAT.format(this.mPerson.getBirthDate()));
         savePerson();
+        this.mFld_zip.requestFocus();
     }
 
     @Override
