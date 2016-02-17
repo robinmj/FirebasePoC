@@ -64,7 +64,12 @@ public class EditPersonActivity extends AppCompatActivity
                 case EditorInfo.IME_ACTION_UNSPECIFIED:
                 case EditorInfo.IME_ACTION_DONE:
                 case EditorInfo.IME_ACTION_NEXT:
-                    savePerson();
+                    savePerson(new Firebase.CompletionListener() {
+                        @Override
+                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                            showDoneStatus();
+                        }
+                    });
             }
             if(v.getId() == R.id.fld_last_name) {
                 //rather than focusing on next field, show birthdate picker
@@ -159,7 +164,7 @@ public class EditPersonActivity extends AppCompatActivity
         }
     }
 
-    private void savePerson() {
+    private void savePerson(Firebase.CompletionListener callback) {
 
         showUploadingStatus();
 
@@ -176,24 +181,14 @@ public class EditPersonActivity extends AppCompatActivity
         if(key == null) {
             //insert
             Firebase newPersonRef = peopleRef.push();
-            newPersonRef.setValue(person.toMap(), new Firebase.CompletionListener() {
-                @Override
-                public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                    showDoneStatus();
-                }
-            });
+            newPersonRef.setValue(person.toMap(), callback);
 
             person.setKey(newPersonRef.getKey());
 
             Log.i(App.TAG, "saved with key: " + this.mPerson.getKey());
         } else {
             //update
-            peopleRef.child(key).setValue(person.toMap(), new Firebase.CompletionListener() {
-                @Override
-                public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                    showDoneStatus();
-                }
-            });
+            peopleRef.child(key).setValue(person.toMap(), callback);
         }
     }
 
@@ -248,7 +243,12 @@ public class EditPersonActivity extends AppCompatActivity
         calendar.set(year,month,day);
         this.mPerson.setDob(calendar.getTimeInMillis());
         this.mBtn_dob.setText(DOB_FORMAT.format(this.mPerson.getBirthDate()));
-        savePerson();
+        savePerson(new Firebase.CompletionListener() {
+            @Override
+            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                showDoneStatus();
+            }
+        });
         this.mFld_zip.requestFocus();
     }
 
@@ -256,10 +256,16 @@ public class EditPersonActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
-            Intent resultIntent = new Intent();
-            resultIntent.putExtra(PersonDetailFragment.ARG_PERSON, mPerson);
-            setResult(RESULT_OK, resultIntent);
-            finish();
+            savePerson(new Firebase.CompletionListener() {
+                @Override
+                public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                    showDoneStatus();
+                    Intent resultIntent = new Intent();
+                    resultIntent.putExtra(PersonDetailFragment.ARG_PERSON, mPerson);
+                    setResult(RESULT_OK, resultIntent);
+                    finish();
+                }
+            });
             return true;
         }
         return super.onOptionsItemSelected(item);
