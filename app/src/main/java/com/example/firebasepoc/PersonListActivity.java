@@ -48,12 +48,6 @@ public class PersonListActivity extends AppCompatActivity {
 
     private Firebase mPeopleRef;
 
-    public void savePerson(Person person) {
-        Firebase newPersonRef = this.mPeopleRef.push();
-        newPersonRef.setValue(person);
-        person.setKey(newPersonRef.getKey());
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
