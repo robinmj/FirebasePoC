@@ -143,22 +143,67 @@ public class PersonListActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     if (mTwoPane) {
-                        Bundle arguments = new Bundle();
-                        arguments.putSerializable(PersonDetailFragment.ARG_PERSON, person);
-                        PersonDetailFragment fragment = new PersonDetailFragment();
-                        fragment.setArguments(arguments);
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.person_detail_container, fragment)
-                                .commit();
+                        showPerson(person);
                     } else {
-                        Context context = v.getContext();
-                        Intent intent = new Intent(context, PersonDetailActivity.class);
-                        intent.putExtra(PersonDetailFragment.ARG_PERSON, person);
-
-                        context.startActivity(intent);
+                        viewPerson(v.getContext(), person);
                     }
                 }
             });
         }
-    };
+
+        /**
+         * display person in detail fragment
+         * @param person
+         */
+        private void showPerson(Person person) {
+            Bundle arguments = new Bundle();
+            arguments.putSerializable(PersonDetailFragment.ARG_PERSON, person);
+            final PersonDetailFragment fragment = new PersonDetailFragment();
+            fragment.setArguments(arguments);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.person_detail_container, fragment)
+                    .commit();
+
+            findViewById(R.id.btn_edit).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    fragment.editPerson(PersonListActivity.this);
+                    getSupportFragmentManager().beginTransaction()
+                            .remove(fragment)
+                            .commit();
+                }
+            });
+
+            findViewById(R.id.btn_delete).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    fragment.deletePerson(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            getSupportFragmentManager().beginTransaction()
+                                    .remove(fragment)
+                                    .commit();
+
+                            findViewById(R.id.action_buttons).setVisibility(View.INVISIBLE);
+                        }
+                    });
+                }
+            });
+
+            findViewById(R.id.action_buttons).setVisibility(View.VISIBLE);
+        }
+    }
+
+    /**
+     * display person in detail activity
+     * @param context
+     * @param person
+     */
+    private void viewPerson(Context context, Person person) {
+        Intent intent = new Intent(context, PersonDetailActivity.class);
+        intent.putExtra(PersonDetailFragment.ARG_PERSON, person);
+
+        context.startActivity(intent);
+    }
 }

@@ -104,10 +104,16 @@ public class PersonDetailActivity extends AppCompatActivity {
                 NavUtils.navigateUpTo(this, new Intent(this, PersonListActivity.class));
                 return true;
             case R.id.action_delete:
-                this.personDetailFragment.deletePerson();
+                this.personDetailFragment.deletePerson(new Runnable() {
+                    @Override
+                    public void run() {
+                        //go back since this person doesn't exist anymore
+                        finish();
+                    }
+                });
                 break;
             case R.id.action_edit:
-                this.personDetailFragment.editPerson();
+                this.personDetailFragment.editPerson(this);
                 break;
         }
         return super.onOptionsItemSelected(item);

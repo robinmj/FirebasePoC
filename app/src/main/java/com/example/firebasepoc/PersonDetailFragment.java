@@ -3,11 +3,11 @@ package com.example.firebasepoc;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.example.firebasepoc.data.Person;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -85,6 +86,7 @@ public class PersonDetailFragment extends Fragment {
     public static class ConfirmDelete extends DialogFragment implements DialogInterface.OnClickListener {
 
         private Person person;
+        public Runnable callback;
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -111,13 +113,18 @@ public class PersonDetailFragment extends Fragment {
 
             Firebase peopleRef = ((App)getActivity().getApplication()).getFbPeopleRef();
 
-            peopleRef.child(this.person.getKey()).setValue(null);
-
-            Snackbar.make(getActivity().findViewById(R.id.person_detail), "Deleted 1 Person", Snackbar.LENGTH_SHORT).show();
+            peopleRef.child(this.person.getKey()).setValue(null, new Firebase.CompletionListener() {
+                @Override
+                public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                    if(callback != null) {
+                        callback.run();
+                    }
+                }
+            });
         }
     }
 
-    public void deletePerson() {
+    public void deletePerson(Runnable callback) {
 
         ConfirmDelete confirmDelete = new ConfirmDelete();
         Bundle args = new Bundle();
@@ -125,11 +132,12 @@ public class PersonDetailFragment extends Fragment {
 
         confirmDelete.setArguments(args);
         confirmDelete.show(getFragmentManager(), "confirmdelete");
+        confirmDelete.callback = callback;
     }
 
-    public void editPerson() {
-        Intent editIntent = new Intent(getContext(), EditPersonActivity.class);
-        editIntent.putExtra(PersonDetailFragment.ARG_PERSON,  this.mPerson);
+    public void editPerson(Context packageContext) {
+        Intent editIntent = new Intent(packageContext, EditPersonActivity.class);
+        editIntent.putExtra(PersonDetailFragment.ARG_PERSON, this.mPerson);
         startActivityForResult(editIntent, REQUEST_EDIT_PERSON);
     }
 
