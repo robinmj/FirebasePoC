@@ -67,10 +67,13 @@ public class PersonDetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
         Icepick.restoreInstanceState(this, savedInstanceState);
 
-        if(mPerson == null) {
-            mPerson = (Person)getArguments().getSerializable(ARG_PERSON);
+        if (mPerson == null) {
+            mPerson = (Person) getArguments().getSerializable(ARG_PERSON);
         }
+        updateAppBarTitle();
+    }
 
+    private void updateAppBarTitle() {
         Activity activity = this.getActivity();
         CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
         if (appBarLayout != null && mPerson != null) {
@@ -81,6 +84,19 @@ public class PersonDetailFragment extends Fragment {
     @Override public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Icepick.saveInstanceState(this, outState);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == REQUEST_EDIT_PERSON && resultCode == Activity.RESULT_OK) {
+
+            this.mPerson = (Person)data.getSerializableExtra(ARG_PERSON);
+
+            updateAppBarTitle();
+            updateFieldValues();
+        }
     }
 
     public static class ConfirmDelete extends DialogFragment implements DialogInterface.OnClickListener {
@@ -116,7 +132,7 @@ public class PersonDetailFragment extends Fragment {
             peopleRef.child(this.person.getKey()).setValue(null, new Firebase.CompletionListener() {
                 @Override
                 public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                    if(callback != null) {
+                    if (callback != null) {
                         callback.run();
                     }
                 }
@@ -148,6 +164,13 @@ public class PersonDetailFragment extends Fragment {
 
         ButterKnife.bind(this, rootView);
 
+        updateFieldValues();
+
+        return rootView;
+    }
+
+    private void updateFieldValues() {
+
         if (mPerson != null) {
             //populate details
             mVal_first_name.setText(mPerson.getFirstname());
@@ -157,7 +180,5 @@ public class PersonDetailFragment extends Fragment {
             }
             mVal_zip.setText(mPerson.getZip());
         }
-
-        return rootView;
     }
 }
