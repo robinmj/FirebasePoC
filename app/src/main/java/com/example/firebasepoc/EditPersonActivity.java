@@ -10,6 +10,8 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -24,6 +26,8 @@ import android.widget.TextView;
 import com.example.firebasepoc.data.Person;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+
+import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -57,7 +61,21 @@ public class EditPersonActivity extends AppCompatActivity
 
     private ObjectAnimator mSyncStatusBlink = null;
 
-    private TextView.OnEditorActionListener mFieldChangedListener = new TextView.OnEditorActionListener() {
+    private TextWatcher mFieldChangedListener = new TextWatcher(){
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            setSyncStatus(R.drawable.ic_cloud_queue_black_24dp);
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {}
+    };
+
+    private TextView.OnEditorActionListener mFieldCompletedListener = new TextView.OnEditorActionListener() {
         @Override
         public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
             switch(actionId) {
@@ -109,11 +127,14 @@ public class EditPersonActivity extends AppCompatActivity
             }
             mFld_zip.setText(this.mPerson.getZip());
         }
+        mFld_first_name.addTextChangedListener(mFieldChangedListener);
+        mFld_last_name.addTextChangedListener(mFieldChangedListener);
+        mFld_zip.addTextChangedListener(mFieldChangedListener);
 
-        mFld_first_name.setOnEditorActionListener(mFieldChangedListener);
-        mFld_last_name.setOnEditorActionListener(mFieldChangedListener);
+        mFld_first_name.setOnEditorActionListener(mFieldCompletedListener);
+        mFld_last_name.setOnEditorActionListener(mFieldCompletedListener);
         mBtn_dob.setOnClickListener(mEditDobListener);
-        mFld_zip.setOnEditorActionListener(mFieldChangedListener);
+        mFld_zip.setOnEditorActionListener(mFieldCompletedListener);
 
         if(this.mPerson.getKey() == null) {
             Log.w(App.TAG, "restored without key");
